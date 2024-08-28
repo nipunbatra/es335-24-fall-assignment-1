@@ -613,11 +613,11 @@ class DecisionTree:
 
                 # calculate criteria for each feature
                 # check which feature gives you minimum confusion for prediction
-                if (self.criterion == "entropy"):
+                if (self.criterion == "information_gain"):
                     for x in attributes:
                         attr = samples[x]
 
-                        inf_gain = information_gain(output_vec,attr,criterion='entropy')
+                        inf_gain = information_gain(output_vec,attr,criterion='information_gain')
 
                         a.append(inf_gain)
                         # print("x", x, "info_gain", inf_gain)
