@@ -124,8 +124,8 @@ def information_gain(Y, attr,criterion):
     Outputs:
     > Return the information gain as a float
     """
-    assert criterion in ['information_gain', 'gini_index','mse']
-    if(criterion=='information_gain'):
+    assert criterion in ['entropy', 'gini_index','mse']
+    if(criterion=='entropy'):
         diff_vals = [] 
         for i, elem in attr.items():
             if(str(elem) not in diff_vals):
@@ -163,7 +163,7 @@ def information_gain(Y, attr,criterion):
             ent = gini_index(storer_)
             redu_gini += ((sv_len)/len(attr))*ent
         return float(gini_index(Y))-float(redu_gini)
-    else:
+    elif criterion == 'mse':
         diff_vals = attr.unique()
         redu_mse = 0.0
         for val in diff_vals:
@@ -206,7 +206,7 @@ def opt_split_attribute(X: pd.DataFrame, y: pd.Series, criterion: str, features:
                     best_attribute = (feature, split_point)  # tuple to store the feature and the split point
         else:
             # Discrete feature: calculate information gain for the categorical feature
-            gain = information_gain(y, attr, criterion='information_gain, gini_index' )
+            gain = information_gain(y, attr, criterion='entropy, gini_index' )
             if gain > best_gain:
                 best_gain = gain
                 best_attribute = feature
@@ -354,6 +354,34 @@ def loss(Y, split_index):
     return loss
 
 
+'''
+def information_gain(self, y: pd.Series, left_y: pd.Series, right_y: pd.Series):
+        entropy_before = self._entropy(y)
+        entropy_after = (len(left_y) / len(y)) * self._entropy(left_y) + (len(right_y) / len(y)) * self._entropy(right_y)
+        return entropy_before - entropy_after
+
+def entropy(self, y: pd.Series):
+        counts = Counter(y)
+        probabilities = [count / len(y) for count in counts.values()]
+        return -sum(p * np.log2(p) for p in probabilities if p > 0)
+
+def gini_index(self, y: pd.Series, left_y: pd.Series, right_y: pd.Series):
+        gini_before = 1 - sum((count / len(y))**2 for count in Counter(y).values())
+        gini_after = (len(left_y) / len(y)) * (1 - sum((count / len(left_y))**2 for count in Counter(left_y).values()))
+        gini_after += (len(right_y) / len(y)) * (1 - sum((count / len(right_y))**2 for count in Counter(right_y).values()))
+        return gini_before - gini_after  
+
+
+
+def split(self, X: pd.DataFrame, y: pd.Series, split: tuple):
+        feature, value = split
+        left_X = X[X[feature] <= value]
+        right_X = X[X[feature] > value]
+        left_y = y[X[feature] <= value]
+        right_y = y[X[feature] > value]
+        return left_X, left_y, right_X, right_y
+
+'''
 
 
     
